@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import EmployeeService from "../services/EmployeeService";
+import ProductService from "../services/ProductService";
 
-const ListEmployeeComponent = () => {
+const ListProductComponent = () => {
   const navigate = useNavigate();
-  const [employees, setEmployees] = React.useState([]);
+  const [products, setProducts] = React.useState([]);
 
   useEffect(() => {
-    EmployeeService.getEmployees().then((res) => {
-      setEmployees(res.data);
+    ProductService.getProducts().then((res) => {
+      setProducts(res.data);
     });
   }, []);
 
@@ -16,30 +16,30 @@ const ListEmployeeComponent = () => {
     navigate(`/`);
   }
 
-  const deleteEmployee = (id) => {
-    EmployeeService.deleteEmployee(id).then(() => {
-      setEmployees(employees.filter((employee) => employee.id !== id));
+  const deleteProduct = (id) => {
+    ProductService.deleteProduct(id).then(() => {
+      setProducts(products.filter((product) => product.id !== id));
     });
   };
 
-  const viewEmployee = (id) => {
-    navigate(`/view-employee/${id}`);
+  const viewProduct = (id) => {
+    navigate(`/view-product/${id}`);
   };
 
-  const editEmployee = (id) => {
-    navigate(`/add-employee/${id}`);
+  const editProduct = (id) => {
+    navigate(`/add-product/${id}`);
   };
 
-  const addEmployee = () => {
-    navigate("/add-employee/_add");
+  const addProduct = () => {
+    navigate("/add-product/_add");
   };
 
   return (
     <div>
-      <h2 className="text-center">Employees List</h2>
+      <h2 className="text-center">Products List</h2>
       <div className="row">
-        <button className="btn btn-primary" onClick={addEmployee}>
-          Add Employee
+        <button className="btn btn-primary" onClick={addProduct}>
+          Add Product
         </button>
       </div>
       <br />
@@ -47,35 +47,35 @@ const ListEmployeeComponent = () => {
         <table className="table table-striped table-bordered">
           <thead>
             <tr>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Email</th>
+              <th>Name</th>
+              <th>Price</th>
+              <th>Quantity</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {employees.map((employee) => (
-              <tr key={employee.id}>
-                <td>{employee.firstName}</td>
-                <td>{employee.lastName}</td>
-                <td>{employee.email}</td>
+            {products.map((product) => (
+              <tr key={product.id}>
+                <td>{product.name}</td>
+                <td>{product.price}</td>
+                <td>{product.quantity}</td>
                 <td>
                   <button
-                    onClick={() => editEmployee(employee.id)}
+                    onClick={() => editProduct(product.id)}
                     className="btn btn-info"
                   >
                     Update
                   </button>
                   <button
                     style={{ marginLeft: "10px" }}
-                    onClick={() => deleteEmployee(employee.id)}
+                    onClick={() => deleteProduct(product.id)}
                     className="btn btn-danger"
                   >
                     Delete
                   </button>
                   <button
                     style={{ marginLeft: "10px" }}
-                    onClick={() => viewEmployee(employee.id)}
+                    onClick={() => viewProduct(product.id)}
                     className="btn btn-info"
                   >
                     View
@@ -97,4 +97,4 @@ const ListEmployeeComponent = () => {
   );
 };
 
-export default ListEmployeeComponent;
+export default ListProductComponent;

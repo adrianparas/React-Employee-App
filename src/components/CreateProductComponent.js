@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import EmployeeService from "../services/EmployeeService";
+import ProductService from "../services/ProductService";
 
-const CreateEmployeeComponent = () => {
+const CreateProductComponent = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const [employee, setEmployee] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
+  const [product, setProduct] = useState({
+    name: "",
+    price: "",
+    quantity: "",
   });
 
   useEffect(() => {
     if (id !== "_add") {
-      EmployeeService.getEmployeeById(id)
+      ProductService.getProductById(id)
         .then((res) => {
-          const { firstName, lastName, email } = res.data;
-          setEmployee({ firstName, lastName, email });
+          const { name, price, quantity } = res.data;
+          setProduct({ name, price, quantity });
         })
         .catch((error) => {
           console.log(error);
@@ -25,20 +25,20 @@ const CreateEmployeeComponent = () => {
     }
   }, [id]);
 
-  const saveOrUpdateEmployee = (e) => {
-    e.preventDefault();
+  const saveOrUpdateProduct = (p) => {
+    p.preventDefault();
     if (id === "_add") {
-      EmployeeService.createEmployee(employee)
+      ProductService.createProduct(product)
         .then(() => {
-          navigate("/employees");
+          navigate("/products");
         })
         .catch((error) => {
           console.log(error);
         });
     } else {
-      EmployeeService.updateEmployee(employee, id)
+      ProductService.updateProduct(product, id)
         .then(() => {
-          navigate("/employees");
+          navigate("/products");
         })
         .catch((error) => {
           console.log(error);
@@ -46,23 +46,23 @@ const CreateEmployeeComponent = () => {
     }
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setEmployee((prevEmployee) => ({
-      ...prevEmployee,
+  const handleChange = (p) => {
+    const { name, value } = p.target;
+    setProduct((prevProduct) => ({
+      ...prevProduct,
       [name]: value,
     }));
   };
 
   const handleCancel = () => {
-    navigate("/employees");
+    navigate("/products");
   };
 
   const getTitle = () => {
     if (id === "_add") {
-      return <h3 className="text-center">Add Employee</h3>;
+      return <h3 className="text-center">Add Product</h3>;
     } else {
-      return <h3 className="text-center">Update Employee</h3>;
+      return <h3 className="text-center">Update Product</h3>;
     }
   };
 
@@ -76,39 +76,39 @@ const CreateEmployeeComponent = () => {
             <div className="card-body">
               <form>
                 <div className="form-group">
-                  <label>First Name:</label>
+                  <label>Name:</label>
                   <input
-                    placeholder="First Name"
-                    name="firstName"
+                    placeholder="Name"
+                    name="name"
                     className="form-control"
-                    value={employee.firstName}
+                    value={product.name}
                     onChange={handleChange}
                   />
                 </div>
                 <div className="form-group">
-                  <label>Last Name:</label>
+                  <label>Price:</label>
                   <input
-                    placeholder="Last Name"
-                    name="lastName"
+                    placeholder="Price"
+                    name="price"
                     className="form-control"
-                    value={employee.lastName}
+                    value={product.price}
                     onChange={handleChange}
                   />
                 </div>
                 <div className="form-group">
-                  <label>Email:</label>
+                  <label>Quantity:</label>
                   <input
-                    placeholder="Email"
-                    name="email"
+                    placeholder="Quantity"
+                    name="quantity"
                     className="form-control"
-                    value={employee.email}
+                    value={product.quantity}
                     onChange={handleChange}
                   />
                 </div>
 
                 <button
                   className="btn btn-success"
-                  onClick={saveOrUpdateEmployee}
+                  onClick={saveOrUpdateProduct}
                 >
                   Save
                 </button>
@@ -128,4 +128,4 @@ const CreateEmployeeComponent = () => {
   );
 };
 
-export default CreateEmployeeComponent;
+export default CreateProductComponent;

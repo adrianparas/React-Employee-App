@@ -1,68 +1,68 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import EmployeeService from "../services/EmployeeService";
+import ProductService from "../services/ProductService";
 
-const UpdateEmployeeComponent = () => {
+const UpdateProductComponent = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [employee, setEmployee] = useState({
-    firstName: "",
-    lastName: "",
-    email: ""
+  const [product, setProduct] = useState({
+    name: "",
+    price: "",
+    quantity: ""
   });
 
   useEffect(() => {
-    EmployeeService.getEmployeeById(id).then((res) => {
-      setEmployee(res.data);
+    ProductService.getProductById(id).then((res) => {
+      setProduct(res.data);
     });
   }, [id]);
 
   const handleChange = (e) => {
-    const { firstName, value } = e.target;
-    setEmployee((prevEmployee) => ({
-      ...prevEmployee,
-      [firstName]: value
+    const { name, value } = e.target;
+    setProduct((prevProduct) => ({
+      ...prevProduct,
+      [name]: value
     }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    EmployeeService.updateEmployee(id, employee).then(() => {
-      navigate("/employees");
+    ProductService.updateProduct(id, product).then(() => {
+      navigate("/products");
     });
   };
 
   return (
     <div>
-      <h2 className="text-center">Update Employee</h2>
+      <h2 className="text-center">Update Product</h2>
       <form>
         <div className="form-group">
-          <label>First Name:</label>
+          <label>Name:</label>
           <input
             type="text"
             className="form-control"
-            name="firstName"
-            value={employee.firstName}
+            name="name"
+            value={product.name}
             onChange={handleChange}
           />
         </div>
         <div className="form-group">
-          <label>Last Name:</label>
+          <label>Price:</label>
           <input
             type="text"
             className="form-control"
-            name="lastName"
-            value={employee.lastName}
+            name="price"
+            value={product.price}
             onChange={handleChange}
           />
         </div>
         <div className="form-group">
-          <label>Email:</label>
+          <label>Quantity:</label>
           <input
             type="text"
             className="form-control"
-            name="email"
-            value={employee.email}
+            name="quantity"
+            value={product.quantity}
             onChange={handleChange}
           />
         </div>
@@ -74,4 +74,4 @@ const UpdateEmployeeComponent = () => {
   );
 };
 
-export default UpdateEmployeeComponent;
+export default UpdateProductComponent;
